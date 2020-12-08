@@ -1,1 +1,1 @@
-from .deepperf import DeepPerf 
+from .FNN import FNN
