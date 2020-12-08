@@ -26,8 +26,8 @@ args.cuda = not args.no_cuda and torch.cuda.is_available()
 
 matrix, feature, out, id_train, id_val, id_test = load_data()
 
+print(args.cuda)
 if args.cuda:
-    model.cuda()
     feature = feature.cuda()
     matrix = matrix.cuda()
     out = out.cuda()
@@ -35,7 +35,16 @@ if args.cuda:
     idx_test = id_test.cuda()
     idx_val = id_val.cuda()
 
-print(feature.shape)
-
 def train(epoch, layer, lr, lambd):
-    model = FNN()
+    model = FNN(feature.shape[1], out.shape[1], layer, 128)
+    print(args.cuda)
+    if args.cuda:
+        model = model.cuda()
+    model.train()
+    output = model(feature)
+
+    for param in model.parameters() :
+        print(param.shape)
+
+train(args.epochs, 2, 0.1, 0.1)
+        
