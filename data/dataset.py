@@ -5,7 +5,7 @@ def load_data(path="./data/") :
     print("loading dataset")
 
     matrix = np.loadtxt(path+"matrix.txt", delimiter=' ')
-    feature = np.loadtxt(path+"feature.txt", delimiter=' ')
+    feature = np.loadtxt(path+"feature_normalize.txt", delimiter=' ')
     out = np.loadtxt(path+"out.txt", delimiter=' ')
 
     feature = torch.FloatTensor(normalize(feature))
@@ -22,6 +22,13 @@ def load_data(path="./data/") :
     id_test = torch.LongTensor(id_test)
 
     return matrix, feature, out, id_train, id_val, id_test
+
+def load_data_relation(path="./data/") :
+    print("loading dataset")
+
+    feature = np.loadtxt(path+"train.txt", delimiter=' ')
+    weight = np.loadtxt(path+"weight.txt", delimiter=' ')
+    out = np.loadtxt(path+"out.txt", delimiter=' ')
 
 def normalize(mx) :
     rowsum = np.array(mx.sum(1))
