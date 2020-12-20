@@ -27,8 +27,24 @@ def load_data_relation(path="./data/") :
     print("loading dataset")
 
     feature = np.loadtxt(path+"train.txt", delimiter=' ')
+    feature = feature.reshape((1680,10,18), order = "C")
+    feature = feature.swapaxes(1,2)
     weight = np.loadtxt(path+"weight.txt", delimiter=' ')
     out = np.loadtxt(path+"out.txt", delimiter=' ')
+
+    feature = torch.FloatTensor(feature)
+    weight = torch.FloatTensor(weight)
+    out = torch.FloatTensor(out)
+
+    id_train = range(500)
+    id_val = range(500,1000)
+    id_test = range(1000, 1600)
+
+    id_train = torch.LongTensor(id_train)
+    id_val = torch.LongTensor(id_val)
+    id_test = torch.LongTensor(id_test)
+
+    return feature, weight, out, id_train, id_val, id_test
 
 def normalize(mx) :
     rowsum = np.array(mx.sum(1))

@@ -24,6 +24,9 @@ double cosdis(double a[10], double b[10]) {
     return up/(sqrt(down1)+sqrt(down2));
 }
 
+double weight[2000][10];
+int cnt[2000];
+
 int main() {
     for (int i = 0;i < ele_num; i++) {
         for (int j = 0;j < 9;j++) {
@@ -55,9 +58,21 @@ int main() {
             }
             outtrain << features[cur.second][8] << endl;
 
-            if(!q.empty()) outweight << sim[i][cur.second] << ' ';
-            else outweight << sim[i][cur.second] << endl;
+            weight[i][cnt[i]++] = sim[i][cur.second];
         }
+    }
+
+    for(int i = 0;i < ele_num;i++) {
+        double tot = 0;
+        for(int j = 0;j < 10;j++) {
+            tot += weight[i][j];
+        }
+        for(int j = 0;j < 10;j++) {
+            weight[i][j] /= tot;
+            if(j == 0) outweight << weight[i][j];
+            else outweight << ' ' << weight[i][j];
+        }
+        outweight << endl;
     }
 
 }
