@@ -3,6 +3,7 @@
 #include <math.h>
 using namespace std;
 
+/*
 ifstream file("./feature.txt");
 ofstream out("./feature_normalize.txt");
 
@@ -27,6 +28,20 @@ int main() {
             if(j != 8) out << ' ';
         }
         if(i != 1679) out << endl;
+    }
+
+}
+*/
+
+int main() {
+    ifstream in("./out.txt");
+    ofstream out1("./out1.txt");
+    ofstream out2("./out2.txt");
+
+    double a1, a2;
+    while(in >> a1 >> a2) {
+        out1 << a1 << endl;
+        out2 << a2 << endl;
     }
 
 }

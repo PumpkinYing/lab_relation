@@ -27,10 +27,9 @@ def load_data_relation(path="./data/") :
     print("loading dataset")
 
     feature = np.loadtxt(path+"train.txt", delimiter=' ')
-    feature = feature.reshape((1680,10,18), order = "C")
-    feature = feature.swapaxes(1,2)
+    feature = feature.reshape((1680,10,16), order = "C")
     weight = np.loadtxt(path+"weight.txt", delimiter=' ')
-    out = np.loadtxt(path+"out.txt", delimiter=' ')
+    out = np.loadtxt(path+"out1.txt", delimiter=' ')
 
     feature = torch.FloatTensor(feature)
     weight = torch.FloatTensor(weight)
