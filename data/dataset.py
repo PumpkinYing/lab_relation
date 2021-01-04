@@ -23,21 +23,27 @@ def load_data(path="./data/") :
 
     return matrix, feature, out, id_train, id_val, id_test
 
-def load_data_relation(path="./data/") :
+def load_data_relation(system, path="./data/") :
+
+    train_num = {}
+    train_num["Apache"] = 80
+    train_num["Self"] = 500 
+    train_num["BDBC"] = 800
+
     print("loading dataset")
 
-    feature = np.loadtxt(path+"train.txt", delimiter=' ')
-    feature = feature.reshape((1680,10,16), order = "C")
-    weight = np.loadtxt(path+"weight.txt", delimiter=' ')
-    out = np.loadtxt(path+"out2.txt", delimiter=' ')
+    feature = np.loadtxt(path+system+"_train.txt", delimiter=' ')
+    feature = feature.reshape((int(feature.shape[0]/10),10,feature.shape[1]), order = "C")
+    weight = np.loadtxt(path+system+"_weight.txt", delimiter=' ')
+    out = np.loadtxt(path+system+"_out.txt", delimiter=' ')
 
     feature = torch.FloatTensor(feature)
     weight = torch.FloatTensor(weight)
     out = torch.FloatTensor(out)
 
-    id_train = range(500)
-    id_val = range(500,1000)
-    id_test = range(1000, 1600)
+    id_train = range(train_num[system])
+    id_val = range(train_num[system], 2*train_num[system])
+    id_test = range(1000, out.shape[0])
 
     id_train = torch.LongTensor(id_train)
     id_val = torch.LongTensor(id_val)

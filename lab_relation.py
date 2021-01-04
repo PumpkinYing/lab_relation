@@ -17,19 +17,20 @@ from data import load_data_relation
 import matplotlib.pyplot as plt
 
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "3"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--no-cuda', action='store_true',default=False,
                     help='Disables CUDA training')
-parser.add_argument('--seed', type=int, default=282, help="Random seed")
+parser.add_argument('--system', type=str, default="train", help="system of dataset")
+parser.add_argument('--seed', type=int, default=233, help="Random seed")
 parser.add_argument('--epochs', type=int, default=1000,
                     help="Number of training epochs")
 
 args = parser.parse_args()
 args.cuda = not args.no_cuda and torch.cuda.is_available()
 
-feature, weight, out, idx_train, idx_val, idx_test = load_data_relation()
+feature, weight, out, idx_train, idx_val, idx_test = load_data_relation(args.system)
 
 Loss = nn.L1Loss()
 
@@ -63,6 +64,7 @@ def relative_loss(output, out) :
     loss = torch.div(torch.abs(output-out), out)
     loss = torch.sum(loss, 0)
     loss = loss*100/output.shape[0]
+    return loss.item()
 
 def train_epoch(epoch, model, optimizer, lambd) :
     model.train()
@@ -132,7 +134,7 @@ def print_pic(output, out, lr, layer, lambd, loss) :
     # plt.plot(range(mx_idx), output.detach().cpu().numpy()[:,1], label='output')
     # plt.plot(range(mx_idx), out.detach().cpu().numpy()[:,1], label='true')
     # plt.legend(loc=3)
-    plt.savefig('./pics/result2_%f_lr_%d_layer_%f_loss_%f_lambda.png'%(lr, layer, lambd, loss))
+    plt.savefig('./pics/'+args.system+'_%f_lr_%d_layer_%f_loss_%f_lambda.png'%(lr, layer, loss, lambd))
 
 
 
@@ -140,35 +142,36 @@ setup_seed(args.seed)
 
 lrs = [0.00001, 0.0001, 0.001, 0.01, 0.1]
 lambdas = [0.001, 0.003, 0.006, 0.01, 0.03, 0.06, 0.1]
-layers = [2,3,4,5,6]
-
+layers = [2,3,4,5,6,7,8,9]
 
 min_loss = 100000000
 min_lr = -1
 for lr in lrs :
     model, output, cur_loss = train(args.epochs, 2, lr, 0.1)
-    print(relative_loss(output, out))
+    MRE = relative_loss(output, out)
     print_pic(output, out, lr, 2, 0.1, cur_loss)
-    if(cur_loss < min_loss) :
-        min_loss = cur_loss
+    if(MRE < min_loss) :
+        min_loss = MRE
         min_lr = lr
 
 min_loss = 100000000
 min_layer = -1
 for layer in layers :
     model, output, cur_loss = train(args.epochs, layer, min_lr, 0.1)
+    MRE = relative_loss(output, out)
     print_pic(output, out, min_lr, layer, 0.1, cur_loss)
-    if(cur_loss < min_loss) :
-        min_loss = cur_loss
+    if(MRE < min_loss) :
+        min_loss = MRE
         min_layer = layer
 
 min_loss = 100000000
 min_lambda = -1
 for lambd in lambdas :
     model, output, cur_loss = train(args.epochs, min_layer, min_lr, lambd)
+    MRE = relative_loss(output, out)
     print_pic(output, out, min_lr, min_layer, lambd, cur_loss)
-    if(cur_loss < min_loss) :
-        min_loss = cur_loss
+    if(MRE < min_loss) :
+        min_loss = MRE
         min_lambda = lambd
 
 
@@ -184,5 +187,6 @@ for lambd in lambdas :
 # output = torch.sum(output, 1)
  
 print("final args: layer: %d, lr: %f, lambda: %f" %(min_layer, min_lr, min_lambda))
-print("final loss: %f" %(min_loss))
+# print("final loss: %f" %(min_loss))
+print("final relative loss: %f" %(MRE))
 

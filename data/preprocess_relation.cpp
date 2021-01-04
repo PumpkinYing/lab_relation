@@ -2,22 +2,29 @@
 #include <fstream>
 #include <math.h>
 #include <queue>
+#include <string>
+#include <cstring>
 using namespace std;
 
-ifstream file("./feature.txt");
-ofstream outtrain("./train.txt");
-ofstream outweight("./weight.txt");
+string system_name = "BDBC";
+ifstream file("./"+system_name+"_AllNumeric.txt");
+ofstream outtrain("./"+system_name+"_train.txt");
+ofstream outweight("./"+system_name+"_weight.txt");
 
-double features[2000][10];
-double sim[2000][2000];
-const int ele_num = 1680;
+const int max_size = 5000;
+const int max_feature_size = 20;
+
+double features[max_size][max_feature_size];
+double sim[max_size][max_size];
+const int ele_num = 2560;
+const int train_size = 800;
 const int neighbor_num = 10;
+const int feature_num = 16;
 
-double cosdis(double a[10], double b[10]) {
-    double dis;
+double cosdis(double a[20], double b[20]) {
     double up = 0;
-    double down1 = 0, down2 = 0;
-    for(int i = 0;i < 9;i++) {
+    double down1 = 0.01, down2 = 0.01;
+    for(int i = 0;i < feature_num;i++) {
         up += a[i]*b[i];
         down1 += a[i]*a[i];
         down2 += b[i]*b[i];
@@ -25,25 +32,35 @@ double cosdis(double a[10], double b[10]) {
     return up/(sqrt(down1)+sqrt(down2));
 }
 
-double weight[2000][10];
-int cnt[2000];
+double eucdis(double a[20], double b[20]) {
+    double dis = 0;
+    for(int i = 0;i < feature_num; i++) {
+        dis += (a[i]-b[i])*(a[i]-b[i]);
+    }
+    dis += 0.00000001;
+    return 1/sqrt(dis);
+}
+
+double weight[max_size][max_feature_size];
+int cnt[max_size];
 
 int main() {
     for (int i = 0;i < ele_num; i++) {
-        for (int j = 0;j < 9;j++) {
+        for (int j = 0;j < feature_num;j++) {
             file >> features[i][j];
         }
     }
 
     for (int i = 0;i < ele_num; i++) {
-        for(int j = 0;j < ele_num; j++) {
-            sim[i][j] = cosdis(features[i], features[j]);
+        for(int j = 0;j < train_size; j++) {
+            sim[i][j] = eucdis(features[i], features[j]);
         }
     }
 
     for (int i = 0;i < ele_num; i++) {
         priority_queue<pair<double, int>> q ;
-        for (int j = 0;j < ele_num;j++) {
+        for (int j = 0;j < train_size;j++) {
+            if(i == j) continue;
             q.push({sim[i][j], j});
             if(q.size() > neighbor_num) q.pop();
         }
@@ -51,13 +68,13 @@ int main() {
         while(!q.empty()) {
             auto cur = q.top();
             q.pop();
-            for (int j = 0;j < 8;j++) {
+            for (int j = 0;j < feature_num;j++) {
                 outtrain << features[i][j] << ' ';
             }
-            for(int j = 0;j < 7;j++) {
+            for(int j = 0;j < feature_num-1;j++) {
                 outtrain << features[cur.second][j] << ' ';
             }
-            outtrain << features[cur.second][7] << endl;
+            outtrain << features[cur.second][feature_num-1] << endl;
 
             weight[i][cnt[i]++] = sim[i][cur.second];
         }
