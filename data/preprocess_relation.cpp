@@ -6,22 +6,22 @@
 #include <cstring>
 using namespace std;
 
-string system_name = "BDBC";
+string system_name = "hipacc";
 ifstream file("./"+system_name+"_AllNumeric.txt");
 ofstream outtrain("./"+system_name+"_train.txt");
 ofstream outweight("./"+system_name+"_weight.txt");
 
-const int max_size = 5000;
-const int max_feature_size = 20;
+const int max_size = 14000;
+const int max_feature_size = 40;
 
 double features[max_size][max_feature_size];
 double sim[max_size][max_size];
-const int ele_num = 2560;
-const int train_size = 800;
-const int neighbor_num = 10;
-const int feature_num = 16;
+const int ele_num = 13485;
+const int train_size = 4000;
+const int neighbor_num = 50;
+const int feature_num = 33;
 
-double cosdis(double a[20], double b[20]) {
+double cosdis(double a[max_feature_size], double b[max_feature_size]) {
     double up = 0;
     double down1 = 0.01, down2 = 0.01;
     for(int i = 0;i < feature_num;i++) {
@@ -32,7 +32,7 @@ double cosdis(double a[20], double b[20]) {
     return up/(sqrt(down1)+sqrt(down2));
 }
 
-double eucdis(double a[20], double b[20]) {
+double eucdis(double a[max_feature_size], double b[max_feature_size]) {
     double dis = 0;
     for(int i = 0;i < feature_num; i++) {
         dis += (a[i]-b[i])*(a[i]-b[i]);

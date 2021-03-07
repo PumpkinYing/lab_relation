@@ -146,13 +146,15 @@ layers = [2,3,4,5,6,7,8,9]
 
 min_loss = 100000000
 min_lr = -1
+min_MRE = -1
 for lr in lrs :
     model, output, cur_loss = train(args.epochs, 2, lr, 0.1)
     MRE = relative_loss(output, out)
     print_pic(output, out, lr, 2, 0.1, cur_loss)
-    if(MRE < min_loss) :
-        min_loss = MRE
+    if(cur_loss < min_loss) :
+        min_loss = cur_loss
         min_lr = lr
+        min_MRE = MRE
 
 min_loss = 100000000
 min_layer = -1
@@ -160,9 +162,10 @@ for layer in layers :
     model, output, cur_loss = train(args.epochs, layer, min_lr, 0.1)
     MRE = relative_loss(output, out)
     print_pic(output, out, min_lr, layer, 0.1, cur_loss)
-    if(MRE < min_loss) :
-        min_loss = MRE
+    if(cur_loss < min_loss) :
+        min_loss = cur_loss
         min_layer = layer
+        min_MRE = MRE
 
 min_loss = 100000000
 min_lambda = -1
@@ -170,9 +173,10 @@ for lambd in lambdas :
     model, output, cur_loss = train(args.epochs, min_layer, min_lr, lambd)
     MRE = relative_loss(output, out)
     print_pic(output, out, min_lr, min_layer, lambd, cur_loss)
-    if(MRE < min_loss) :
-        min_loss = MRE
+    if(cur_loss < min_loss) :
+        min_loss = cur_loss
         min_lambda = lambd
+        min_MRE = MRE
 
 
 # model, output, loss = train(args.epochs, min_layer, min_lr, min_lambda)
@@ -188,5 +192,5 @@ for lambd in lambdas :
  
 print("final args: layer: %d, lr: %f, lambda: %f" %(min_layer, min_lr, min_lambda))
 # print("final loss: %f" %(min_loss))
-print("final relative loss: %f" %(MRE))
+print("final relative loss: %f" %(min_MRE))
 

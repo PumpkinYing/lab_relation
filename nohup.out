@@ -1,0 +1,76 @@
+loading dataset
+Traceback (most recent call last):
+  File "lab_relation.py", line 33, in <module>
+    feature, weight, out, idx_train, idx_val, idx_test = load_data_relation(args.system)
+  File "/home/cike/lab_relation/data/dataset.py", line 36, in load_data_relation
+    feature = np.loadtxt(path+system+"_train.txt", delimiter=' ')
+  File "/usr/local/lib/python3.6/dist-packages/numpy/lib/npyio.py", line 962, in loadtxt
+    fh = np.lib._datasource.open(fname, 'rt', encoding=encoding)
+  File "/usr/local/lib/python3.6/dist-packages/numpy/lib/_datasource.py", line 266, in open
+    return ds.open(path, mode, encoding=encoding, newline=newline)
+  File "/usr/local/lib/python3.6/dist-packages/numpy/lib/_datasource.py", line 624, in open
+    raise IOError("%s not found." % path)
+OSError: ./data/train_train.txt not found.
+loading dataset
+Training FNN for 2 layers, 0.000010 learning rate, 0.100000 lambda
+Result for 2 layers, 0.000010 learning rate, 0.100000 lambda
+loss_val: 6.9214
+Training FNN for 2 layers, 0.000100 learning rate, 0.100000 lambda
+Result for 2 layers, 0.000100 learning rate, 0.100000 lambda
+loss_val: 6.6954
+Training FNN for 2 layers, 0.001000 learning rate, 0.100000 lambda
+Result for 2 layers, 0.001000 learning rate, 0.100000 lambda
+loss_val: 6.5022
+Training FNN for 2 layers, 0.010000 learning rate, 0.100000 lambda
+Result for 2 layers, 0.010000 learning rate, 0.100000 lambda
+loss_val: 28.7075
+Training FNN for 2 layers, 0.100000 learning rate, 0.100000 lambda
+Result for 2 layers, 0.100000 learning rate, 0.100000 lambda
+loss_val: 28.7075
+Training FNN for 2 layers, 0.001000 learning rate, 0.100000 lambda
+Result for 2 layers, 0.001000 learning rate, 0.100000 lambda
+loss_val: 5.6671
+Training FNN for 3 layers, 0.001000 learning rate, 0.100000 lambda
+Result for 3 layers, 0.001000 learning rate, 0.100000 lambda
+loss_val: 5.9152
+Training FNN for 4 layers, 0.001000 learning rate, 0.100000 lambda
+Result for 4 layers, 0.001000 learning rate, 0.100000 lambda
+loss_val: 5.2305
+Training FNN for 5 layers, 0.001000 learning rate, 0.100000 lambda
+Result for 5 layers, 0.001000 learning rate, 0.100000 lambda
+loss_val: 5.6083
+Training FNN for 6 layers, 0.001000 learning rate, 0.100000 lambda
+Result for 6 layers, 0.001000 learning rate, 0.100000 lambda
+loss_val: 4.8527
+Training FNN for 7 layers, 0.001000 learning rate, 0.100000 lambda
+Result for 7 layers, 0.001000 learning rate, 0.100000 lambda
+loss_val: 4.9120
+Training FNN for 8 layers, 0.001000 learning rate, 0.100000 lambda
+Result for 8 layers, 0.001000 learning rate, 0.100000 lambda
+loss_val: 5.7973
+Training FNN for 9 layers, 0.001000 learning rate, 0.100000 lambda
+Result for 9 layers, 0.001000 learning rate, 0.100000 lambda
+loss_val: 5.8199
+Training FNN for 6 layers, 0.001000 learning rate, 0.001000 lambda
+Result for 6 layers, 0.001000 learning rate, 0.001000 lambda
+loss_val: 5.1425
+Training FNN for 6 layers, 0.001000 learning rate, 0.003000 lambda
+Result for 6 layers, 0.001000 learning rate, 0.003000 lambda
+loss_val: 5.8117
+Training FNN for 6 layers, 0.001000 learning rate, 0.006000 lambda
+Result for 6 layers, 0.001000 learning rate, 0.006000 lambda
+loss_val: 6.0917
+Training FNN for 6 layers, 0.001000 learning rate, 0.010000 lambda
+Result for 6 layers, 0.001000 learning rate, 0.010000 lambda
+loss_val: 4.9857
+Training FNN for 6 layers, 0.001000 learning rate, 0.030000 lambda
+Result for 6 layers, 0.001000 learning rate, 0.030000 lambda
+loss_val: 5.9813
+Training FNN for 6 layers, 0.001000 learning rate, 0.060000 lambda
+Result for 6 layers, 0.001000 learning rate, 0.060000 lambda
+loss_val: 5.3233
+Training FNN for 6 layers, 0.001000 learning rate, 0.100000 lambda
+Result for 6 layers, 0.001000 learning rate, 0.100000 lambda
+loss_val: 5.9461
+final args: layer: 6, lr: 0.001000, lambda: 0.010000
+final relative loss: 25.856874
