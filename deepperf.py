@@ -96,7 +96,7 @@ def train(epochs, layer, lr, lambd, idx_train, idx_val):
     print("Result for %d layers, %f learning rate, %f lambda" %(layer, lr, lambd))
     print('loss_val: {:.4f}'.format(loss_val.item()))
     
-    return model, loss_val
+    return output, loss_val
 
 
 def experiment(seed):
@@ -122,23 +122,38 @@ def experiment(seed):
     min_loss = MAX_LOSS
     for layer in layers :
         min_layer_loss = MAX_LOSS
-        best_layer_lr = -1
         for lr in lrs :
-            loss_train, loss_val = train(args.epochs, layer, lr, 0.1, idx_train, idx_val)
+            output, loss_val = train(args.epochs, layer, lr, 0.1, idx_train, idx_val)
             if loss_val < min_layer_loss :
                 min_layer_loss = loss_val
-                best_layer_lr = lr
 
         if min_layer_loss < min_loss :
             min_loss = min_layer_loss
             best_layer = layer
 
-    best_layer = best_layer+5
+    best_layer = best_layer
 
     best_lr = -1
     min_loss = MAX_LOSS
     for lr in lrs :
-        loss_train, loss_val = train(args.epochs, best_layer, lr, 0.1, idx_train, idx_val)
+        output, loss_val = train(args.epochs, best_layer, lr, 0.1, idx_train, idx_val)
+        if loss_val < min_loss :
+            min_loss = loss_val
+            best_lr = lr
+
+    best_layer = best_layer+5
+    best_lambda = -1
+    min_loss = MAX_LOSS
+    for lambd in lambdas :
+        output, loss_val = train(args.epochs, best_layer, best_lr, lambd, idx_train, idx_val)
+        if(loss_val < min_loss) :
+            min_loss = loss_val
+            best_lambda = lambd
+
+    output, loss_val = train(args.epoches, best_layer, best_lr, best_lambda, idx_train, idx_val)
+
+    total_rmse = relative_loss(output, out)
+    print_pic(best_lr, best_layer, total_rmse, best_lambda, output)
 
 
 
