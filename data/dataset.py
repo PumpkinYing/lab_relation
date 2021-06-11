@@ -1,27 +1,41 @@
 import numpy as np 
 import torch
 
-def load_data(path="./data/") :
+# def load_data(path="./data/") :
+#     print("loading dataset")
+
+#     matrix = np.loadtxt(path+"matrix.txt", delimiter=' ')
+#     feature = np.loadtxt(path+"feature_normalize.txt", delimiter=' ')
+#     out = np.loadtxt(path+"out.txt", delimiter=' ')
+
+#     feature = torch.FloatTensor(normalize(feature))
+#     matrix = torch.FloatTensor(matrix+np.eye(matrix.shape[0]))
+#     matrix = torch.FloatTensor(normalize(matrix))
+#     out = torch.FloatTensor(out)
+
+#     id_train = range(500)
+#     id_val = range(500,1000)
+#     id_test = range(1100,1600)
+
+#     id_train = torch.LongTensor(id_train)
+#     id_val = torch.LongTensor(id_val)
+#     id_test = torch.LongTensor(id_test)
+
+#     return matrix, feature, out, id_train, id_val, id_test
+
+def load_data(path) :
     print("loading dataset")
 
-    matrix = np.loadtxt(path+"matrix.txt", delimiter=' ')
-    feature = np.loadtxt(path+"feature_normalize.txt", delimiter=' ')
-    out = np.loadtxt(path+"out.txt", delimiter=' ')
+    data = np.loadtxt(path, delimiter = ',', skip_header = 1)
+    (n, m) = data.shape
+    m = m-1
 
-    feature = torch.FloatTensor(normalize(feature))
-    matrix = torch.FloatTensor(matrix+np.eye(matrix.shape[0]))
-    matrix = torch.FloatTensor(normalize(matrix))
-    out = torch.FloatTensor(out)
+    X_all = data[:, 0:m]
+    Y_all = data[:, m][:, np.newaxis]
+    
+    return X_all, Y_all
 
-    id_train = range(500)
-    id_val = range(500,1000)
-    id_test = range(1100,1600)
-
-    id_train = torch.LongTensor(id_train)
-    id_val = torch.LongTensor(id_val)
-    id_test = torch.LongTensor(id_test)
-
-    return matrix, feature, out, id_train, id_val, id_test
+    
 
 def load_data_relation(system, path="./data/") :
 
